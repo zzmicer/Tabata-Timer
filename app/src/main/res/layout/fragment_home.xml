@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="180dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
         <TextView
-            android:id="@+id/a_timer_text_view_step_count"
+            android:id="@+id/timer_set_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -31,7 +31,7 @@
             android:paddingBottom="20dp"/>
 
         <TextView
-            android:id="@+id/a_timer_text_view_time"
+            android:id="@+id/timer_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -41,7 +41,7 @@
             android:textSize="54sp" />
 
         <TextView
-            android:id="@+id/a_timer_text_view_step"
+            android:id="@+id/timer_stage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -61,34 +61,32 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="200dp"
         android:gravity="center">
 
-        <ImageButton
-            android:id="@+id/a_timer_image_button_replay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorTransparent"
-            app:icon="@drawable/ic_replay_24px"
+        <ImageView
+            android:id="@+id/button_replay"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_replay_24px"
             android:contentDescription="@string/desc_replay" />
 
-        <ImageButton
-            android:id="@+id/a_timer_image_button_play_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorTransparent"
-            app:icon="@drawable/ic_pause_24px"
+
+        <ImageView
+            android:id="@+id/button_play_pause"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_play_24px"
             android:contentDescription="@string/desc_pause_play"
             android:layout_gravity="center"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"/>
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
-        <ImageButton
-            android:id="@+id/a_timer_image_button_stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorTransparent"
-            app:icon="@drawable/ic_stop_24px"
+        <ImageView
+            android:id="@+id/button_stop"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_stop_24px"
             android:contentDescription="@string/desc_pause_play" />
 
     </LinearLayout>
