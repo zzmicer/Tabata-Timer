@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.tabatatimer.R
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -14,6 +13,9 @@ import kotlinx.android.synthetic.main.fragment_home.*
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var timeTV: TextView
+    private lateinit var stageTV: TextView
+    private lateinit var stepCountTV: TextView
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -29,21 +31,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        button_play_pause.setOnClickListener{v ->
-            if(homeViewModel.timerState.value == HomeViewModel.TimerState.Paused){
-                homeViewModel.timerState.value = HomeViewModel.TimerState.Running
-            }
-            else if (homeViewModel.timerState.value == HomeViewModel.TimerState.Running){
-                homeViewModel.timerState.value = HomeViewModel.TimerState.Paused
-            }
-        }
+        timeTV = timer_time
+        stageTV = timer_stage
+        stepCountTV = timer_set_count
 
-        button_replay.setOnClickListener{v ->
-
-        }
-
-        button_stop.setOnClickListener{v ->
-
-        }
+        homeViewModel.iniWorkout(timeTV,stepCountTV,stageTV,requireContext())
     }
+
+
 }

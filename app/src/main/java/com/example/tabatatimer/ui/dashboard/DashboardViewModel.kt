@@ -1,12 +1,12 @@
 package com.example.tabatatimer.ui.dashboard
 
 import android.widget.TextView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.tabatatimer.ui.getTimeFromStr
 
 class DashboardViewModel : ViewModel() {
     val FORMAT = "%02d"
+
 
     public fun plus10(textViewTime: TextView) {
         var currentTime = textViewTime.text.toString()
@@ -58,20 +58,7 @@ class DashboardViewModel : ViewModel() {
         textViewSet.text = currentSetNumber.toString()
     }
 
-    public fun getTimeFromStr(timeStr: String) : Pair<Int, Int> {
-        val tmpList = timeStr.split(":")
-        val minutes = tmpList[0].toInt()
-        val seconds = tmpList[1].toInt()
-        return Pair(minutes, seconds)
-    }
 
-    fun convertSecondsToMinutes(sec: Int): Pair<Int, Int> {
-        val minutes = sec / 60
-        val seconds = sec % 60
-        return Pair(minutes, seconds)
-    }
 
-    fun convertMinutesToSeconds(min: Int, sec: Int): Int {
-        return min * 60 + sec
-    }
+
 }

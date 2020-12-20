@@ -8,14 +8,17 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.tabatatimer.R
+import com.example.tabatatimer.ui.convertMinutesToSeconds
+import com.example.tabatatimer.ui.getTimeFromStr
+import com.example.tabatatimer.ui.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : Fragment() {
 
     private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var homeViewModel: HomeViewModel
 
     private lateinit var setNumberTV: TextView
     private lateinit var setNumberMinusB: ImageView
@@ -31,12 +34,14 @@ class DashboardFragment : Fragment() {
     private lateinit var startB: Button
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel::class.java)
+            ViewModelProviders.of(this).get(DashboardViewModel::class.java)
+        homeViewModel =
+            ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
         return root
@@ -74,6 +79,20 @@ class DashboardFragment : Fragment() {
         }
         restIntervalMinusB.setOnClickListener {
             dashboardViewModel.minus10(restIntervalTV)
+        }
+
+        startB.setOnClickListener {
+            val setNumber: Int = setNumberTV.text.toString().toInt()
+            val workSeconds: Int = convertMinutesToSeconds(
+               getTimeFromStr(workIntervalTV.text.toString()).first,
+                getTimeFromStr(workIntervalTV.text.toString()).second
+            )
+            val restSeconds: Int = convertMinutesToSeconds(
+                getTimeFromStr(restIntervalTV.text.toString()).first,
+                getTimeFromStr(restIntervalTV.text.toString()).second
+            )
+
+            homeViewModel.setTimerConfigs(setNumber,workSeconds,restSeconds)
         }
     }
 }
