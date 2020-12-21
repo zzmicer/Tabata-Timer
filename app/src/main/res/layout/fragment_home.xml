@@ -76,7 +76,7 @@
             android:id="@+id/button_play_pause"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_play_24px"
+            android:src="@drawable/ic_pause_24px"
             android:contentDescription="@string/desc_pause_play"
             android:layout_gravity="center"
             android:layout_marginStart="20dp"

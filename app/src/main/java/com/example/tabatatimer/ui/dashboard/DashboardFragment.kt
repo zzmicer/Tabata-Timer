@@ -1,5 +1,6 @@
 package com.example.tabatatimer.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.example.tabatatimer.R
+import com.example.tabatatimer.TimerActivity
 import com.example.tabatatimer.ui.convertMinutesToSeconds
 import com.example.tabatatimer.ui.getTimeFromStr
 import com.example.tabatatimer.ui.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_dashboard.*
+
 
 class DashboardFragment : Fragment() {
 
@@ -33,15 +36,19 @@ class DashboardFragment : Fragment() {
     private lateinit var restIntervalPlusB: ImageView
     private lateinit var startB: Button
 
+    private val INTENT_SET_NUMBER = "sets_number"
+    private val INTENT_WORK_INTERVAL = "work_interval"
+    private val INTENT_REST_INTERVAL = "rest_interval"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProviders.of(this).get(DashboardViewModel::class.java)
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        dashboardViewModel =
+            ViewModelProviders.of(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
         return root
@@ -92,7 +99,13 @@ class DashboardFragment : Fragment() {
                 getTimeFromStr(restIntervalTV.text.toString()).second
             )
 
-            homeViewModel.setTimerConfigs(setNumber,workSeconds,restSeconds)
-        }
+
+            val intent = Intent(activity, TimerActivity::class.java)
+            intent.putExtra(INTENT_SET_NUMBER, setNumber)
+            intent.putExtra(INTENT_WORK_INTERVAL, workSeconds)
+            intent.putExtra(INTENT_REST_INTERVAL, restSeconds)
+            this.startActivity(intent)
+         }
+
     }
 }

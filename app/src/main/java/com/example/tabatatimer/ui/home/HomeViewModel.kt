@@ -2,11 +2,15 @@ package com.example.tabatatimer.ui.home
 
 import android.content.Context
 import android.os.CountDownTimer
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.tabatatimer.R
+import com.example.tabatatimer.ui.convertMinutesToSeconds
+import com.example.tabatatimer.ui.convertSecondsToMinutes
 import com.example.tabatatimer.ui.getTimeFromStr
 
 class HomeViewModel : ViewModel() {
@@ -16,16 +20,24 @@ class HomeViewModel : ViewModel() {
     private var setNumber: Int = 0
     private var workSeconds: Int = 0
     private var restSeconds: Int = 0
+    private var currStage: Int = 0
+    private var currentSetNumber: Int = 0
+    private var currentWorkSeconds: Int = 0
+    private var currentTime: Int = 0
+    private var currentRestSeconds: Int = 0
+    private var isPaused: Boolean = false
+
     private var timer: CountDownTimer? = null
 
-    public fun setTimerConfigs(setNum: Int, workSec:Int,restSec:Int){
+     fun setTimerConfigs(setNum: Int, workSec:Int,restSec:Int){
         setNumber = setNum
         workSeconds = workSec
-        restSeconds =restSec
+        restSeconds = restSec
+        currentSetNumber = setNumber
     }
 
 
-    public fun decreaseTV(textViewTime: TextView) {
+     fun decreaseTV(textViewTime: TextView) {
         var currentTime = textViewTime.text.toString()
         var seconds = getTimeFromStr(currentTime).second
         var minutes = getTimeFromStr(currentTime).first
@@ -45,25 +57,101 @@ class HomeViewModel : ViewModel() {
     }
 
 
-    public fun startTimer(sec: Int,timeTV: TextView) {
+     fun startTimer(sec: Int,timeTV: TextView, stepCountTV: TextView, stageTV: TextView, context: Context) {
         timer = object : CountDownTimer((sec * 1000).toLong(), 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 decreaseTV(timeTV)
             }
-            override fun onFinish() {}
+
+            override fun onFinish() {
+                if (currentSetNumber != 0) {
+                    if (currStage == 0 || currStage == 2) {
+                        iniWorkout(timeTV,stepCountTV,stageTV,context)
+                    } else if (currStage == 1) {
+                        iniRest(timeTV,stepCountTV,stageTV,context)
+                    } else {
+                        //finish activity
+                    }
+                } else {
+                    iniDone(timeTV,stepCountTV,stageTV,context)
+                }
+            }
         }
         (timer as CountDownTimer).start()
     }
 
-    public fun cancelTimer() {
+     fun cancelTimer() {
         timer?.cancel()
     }
 
-    public fun iniWorkout(timeTV: TextView, stepCountTV: TextView, stageTV: TextView, context: Context) {
-        stepCountTV.text = context.getString(R.string.upper_set) + " " + setNumber.toString()
+     fun iniGetReady(playPauseB:ImageView,timeTV: TextView, stepCountTV: TextView, stageTV: TextView, context: Context) {
+        currStage = 0
+        stageTV.isVisible = true
+        stepCountTV.isVisible = true
+        playPauseB.setImageResource(R.drawable.ic_pause_24px)
+        stepCountTV.text = context.getString(R.string.upper_set) + " " + currentSetNumber.toString()
         stageTV.text = context.getString(R.string.upper_get_ready)
         timeTV.text = context.getString(R.string.ini_time)
-        startTimer(6,timeTV)
+        startTimer(5,timeTV,stepCountTV,stageTV,context)
+    }
+
+     fun iniWorkout(timeTV: TextView, stepCountTV: TextView, stageTV: TextView, context: Context) {
+        currStage = 1
+        stepCountTV.text = context.getString(R.string.upper_set) + " " + currentSetNumber.toString()
+        stageTV.text = context.getString(R.string.upper_work_it)
+        timeTV.text = "${String.format(
+            FORMAT,
+            convertSecondsToMinutes(workSeconds).first
+        )}:${String.format(FORMAT, convertSecondsToMinutes(workSeconds).second + 1)}"
+        startTimer(workSeconds + 1,timeTV,stepCountTV,stageTV,context)
+    }
+
+     fun iniRest(timeTV: TextView, stepCountTV: TextView, stageTV: TextView, context: Context) {
+        currStage = 2
+        stageTV.text = context.getString(R.string.upper_rest_now)
+        timeTV.text = "${String.format(
+            FORMAT,
+            convertSecondsToMinutes(restSeconds).first
+        )}:${String.format(FORMAT, convertSecondsToMinutes(restSeconds).second + 1)}"
+        startTimer(restSeconds + 1,timeTV,stepCountTV,stageTV,context)
+        currentSetNumber -= 1
+    }
+
+     fun iniDone(timeTV: TextView, stepCountTV: TextView, stageTV: TextView, context: Context) {
+        currStage = -1
+        stageTV.isVisible = false
+        stepCountTV.isVisible = false
+        timeTV.text = context.getString(R.string.upper_done)
+        //playPauseB.setImageResource(R.drawable.ic_play_24px)
+    }
+
+    fun replayValues() {
+
+    }
+
+    fun pausePressed(playPauseB:ImageView,timeTV: TextView, stepCountTV: TextView, stageTV: TextView, context: Context){
+        if(!isPaused) {
+            cancelTimer()
+            playPauseB.setImageResource(R.drawable.ic_play_24px)
+            isPaused = true
+        }
+        else {
+            if(currStage != -1) {
+                currentTime = convertMinutesToSeconds(
+                    getTimeFromStr(timeTV.text.toString()).first,
+                    getTimeFromStr(timeTV.text.toString()).second
+                )
+                playPauseB.setImageResource(R.drawable.ic_pause_24px)
+                startTimer(currentTime,timeTV,stepCountTV,stageTV,context)
+                isPaused = false
+            }
+        }
+    }
+
+    fun replayPressed(playPauseB:ImageView,timeTV: TextView, stepCountTV: TextView, stageTV: TextView, context: Context) {
+        cancelTimer()
+        currentSetNumber = setNumber
+        iniGetReady(playPauseB,timeTV,stepCountTV,stageTV,context)
     }
 
 }

@@ -31,11 +31,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        timeTV = timer_time
-        stageTV = timer_stage
-        stepCountTV = timer_set_count
-
-        homeViewModel.iniWorkout(timeTV,stepCountTV,stageTV,requireContext())
     }
 
 
