@@ -1,5 +1,6 @@
 package com.example.tabatatimer
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,8 @@ class TimerActivity: AppCompatActivity() {
     private lateinit var replayB: ImageView
     private lateinit var stopB: ImageView
 
+    private lateinit var mpStart: MediaPlayer
+
     private var setNumberIni: Int = 0
     private var workSecondsIni: Int = 0
     private var restSecondsIni: Int = 0
@@ -39,23 +42,13 @@ class TimerActivity: AppCompatActivity() {
         playPauseB = button_play_pause
         stopB = button_stop
         replayB = button_replay
+        mpStart = MediaPlayer.create(this, R.raw.beep_start)
 
-        stopB.setOnClickListener {
-            homeViewModel.cancelTimer()
-            this.finish()
-        }
 
-        replayB.setOnClickListener {
-            homeViewModel.replayPressed(playPauseB,timeTV,stepCountTV,stageTV,this)
-        }
-
-        playPauseB.setOnClickListener {
-            homeViewModel.pausePressed(playPauseB,timeTV,stepCountTV,stageTV,this)
-        }
-
+        setButtons()
         getValues()
         homeViewModel.setTimerConfigs(setNumberIni,workSecondsIni,restSecondsIni)
-        homeViewModel.iniGetReady(playPauseB,timeTV,stepCountTV,stageTV,this)
+        homeViewModel.iniGetReady(playPauseB,timeTV,stepCountTV,stageTV,this,mpStart)
 
     }
 
@@ -63,6 +56,21 @@ class TimerActivity: AppCompatActivity() {
         setNumberIni = intent.getIntExtra("sets_number", 0)
         workSecondsIni = intent.getIntExtra("work_interval", 0)
         restSecondsIni = intent.getIntExtra("rest_interval", 0)
+    }
+
+    private fun setButtons(){
+        stopB.setOnClickListener {
+            homeViewModel.cancelTimer()
+            this.finish()
+        }
+
+        replayB.setOnClickListener {
+            homeViewModel.replayPressed(playPauseB,timeTV,stepCountTV,stageTV,this,mpStart)
+        }
+
+        playPauseB.setOnClickListener {
+            homeViewModel.pausePressed(playPauseB,timeTV,stepCountTV,stageTV,this,mpStart)
+        }
     }
 
 
