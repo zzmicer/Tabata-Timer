@@ -7,7 +7,8 @@
             app:entries="@array/dark_mode_entries"
             app:entryValues="@array/dark_mode_values"
             app:key="@string/dark_mode"
-            app:title="@string/dark_mode" />
+            app:title="@string/dark_mode"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
