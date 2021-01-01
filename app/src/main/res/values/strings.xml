@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">TabataTimer</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_settings">Settings</string>
+
+    <string name="sets">Sets</string>
+    <string name="upper_set">SET</string>
+    <string name="upper_work_it">WORK IT</string>
+    <string name="upper_get_ready">GET READY</string>
+    <string name="upper_rest_now">REST NOW</string>
+    <string name="work_interval">Work Interval</string>
+    <string name="rest_interval">Rest Interval</string>
+    <string name="upper_start">START</string>
+    <string name="upper_done">DONE!</string>
+    <string name="desc_minus">minus</string>
+    <string name="desc_plus">plus</string>
+    <string name="desc_pause_play">pause or play</string>
+    <string name="desc_replay">replay</string>
+    <string name="desc_stop">stop</string>
+    <string name="time">00:00</string>
+    <string name="set_number">0</string>
+    <string name="ini_time">00:05</string>
+
+
+    <string name="ui">UI</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_def_value">MODE_NIGHT_FOLLOW_SYSTEM</string>
+    <string name="settings">Settings</string>
+
+
+</resources>
